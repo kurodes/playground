@@ -13,7 +13,7 @@
 
 #include "gtest/gtest.h"
 
-const int kBufferSize = 4096;
+const int kBufferSize = 8192;
 //n write, 1 read
 const int kThreadNum = 16;
 const int kWriteTimes = 10000;
@@ -118,7 +118,7 @@ TEST_F(IntraProcess, ConcurrentDirectIO) {
 }
 
 TEST_F(IntraProcess, ConcurrentDAX) {
-    int fd = open("/mnt/pmem/test_BufferedIO.txt", O_RDWR | O_CREAT, 0644);
+    int fd = open("/mnt/pmem/test_DAXIO.txt", O_RDWR | O_CREAT, 0644);
     pwrite(fd, write_bufs[0], kBufferSize, 0);
 
     std::thread *threads[kThreadNum];
