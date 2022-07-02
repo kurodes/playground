@@ -7,7 +7,6 @@
 #include <sys/syscall.h>
 #include <sys/types.h>
 #include <unistd.h>
-
 #include <iostream>
 
 static int io_setup(unsigned nr, aio_context_t *ctxp) {
