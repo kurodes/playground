@@ -31,7 +31,7 @@
 *.out
 *.app
 
-#
+# User specific files
 build
 cmake-build-debug
 .idea
@@ -39,3 +39,4 @@ cmake-build-debug
 .cache
 .clang-format
 .vscode
+.DS_Store
