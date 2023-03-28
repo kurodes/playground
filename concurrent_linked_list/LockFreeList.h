@@ -5,8 +5,6 @@
 #ifndef LIST_LOCKFREELIST_H
 #define LIST_LOCKFREELIST_H
 
-#include <stdatomic.h>
-
 #include <atomic>
 
 #include "List.h"

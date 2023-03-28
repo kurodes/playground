@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(concurrent_read_write)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_CXX_STANDARD 14)
 
