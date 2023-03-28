@@ -39,3 +39,4 @@ cmake-build-debug
 .cache
 .clang-format
 .vscode
+.DS_Store
