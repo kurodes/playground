@@ -16,7 +16,8 @@ else:
   paper = json.load(sys.stdin)
 # print(paper)
 
-title = paper['title'].split(" (arXiv:")[0]
+field = re.search(r"\[cs\..*?\]", paper['title']).group(0)
+title = paper['title'].split(" (arXiv:")[0] + " " + field
 # print(title)
 
 # remove href from the creator string
@@ -31,34 +32,33 @@ description = re.sub(r'\n{1,}', ' ', description.strip())
 
 # %%
 import openai
-openai.api_key = "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"
+openai.api_key = "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"
 message_history = [{"role": "system", "content" : "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.\nKnowledge cutoff: 2021-09-01\nCurrent date: 2023-03-02"}]
 def chat(inp, role = "user"):
   message_history.append({"role": role, "content": inp})
-  completion = openai.ChatCompletion.create(
-    model= "gpt-3.5-turbo",
-    # model= "gpt-4",
-    messages=message_history
-  )
-  reply_content = completion.choices[0].message.content
-  message_history.append({"role": "assistant", "content": reply_content})
+  try:
+    completion = openai.ChatCompletion.create(
+      model= "gpt-3.5-turbo",
+      # model= "gpt-4",
+      messages=message_history
+    )
+    reply_content = completion.choices[0].message.content
+    message_history.append({"role": "assistant", "content": reply_content})
+  except Exception as e:
+    reply_content = str(e)
   return reply_content
 
-translation = chat(f"Translate this abstract of a computer science paper into Chinese: {description}")
-if TEST:
-  print(translation)
-background = chat(f"Explain the background concepts related to this paper.")
-if TEST:
-  print(background)
-# translation = "This is translation"
-# background = "This is background"
-
-
+title_translation = chat(f"Translate this title of a computer science paper into Chinese: {title}")
+if TEST: print(title_translation)
+abstract_translation = chat(f"Translate this abstract of a computer science paper into Chinese: {description}")
+if TEST: print(abstract_translation)
+background = chat(f"Explain the technical terms used in the abstract.")
+if TEST: print(background)
 
 # %%
 rss_item = {}
 rss_item["title"] = title
 background_lines = re.sub(r'\n', '<br>', background)
-rss_item["description"] = f"<p>{author}</p><p>{description}</p><p>{translation}</p><p>{background}</p>"
+rss_item["description"] = f"<p>{title_translation}</p><p>{author}</p><p>{description}</p><p>{abstract_translation}</p><p>{background_lines}</p>"
 rss_item["link"] = paper["link"]
 print(json.dumps(rss_item))
