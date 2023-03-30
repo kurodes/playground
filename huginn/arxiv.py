@@ -16,7 +16,7 @@ else:
   paper = json.load(sys.stdin)
 # print(paper)
 
-field = re.search(r"\[cs\..*?\]", paper['title']).group(0)
+field = re.search(r"\[.*\]", paper['title']).group(0)
 title = paper['title'].split(" (arXiv:")[0] + " " + field
 # print(title)
 
@@ -32,7 +32,7 @@ description = re.sub(r'\n{1,}', ' ', description.strip())
 
 # %%
 import openai
-openai.api_key = "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"
+openai.api_key = open("api_key").read().strip()
 message_history = [{"role": "system", "content" : "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.\nKnowledge cutoff: 2021-09-01\nCurrent date: 2023-03-02"}]
 def chat(inp, role = "user"):
   message_history.append({"role": role, "content": inp})
@@ -52,7 +52,7 @@ title_translation = chat(f"Translate this title of a computer science paper into
 if TEST: print(title_translation)
 abstract_translation = chat(f"Translate this abstract of a computer science paper into Chinese: {description}")
 if TEST: print(abstract_translation)
-background = chat(f"Explain the technical terms used in the abstract.")
+background = chat(f"Go through each technical term used in the abstract and explain this technical term in detail using English and Chinese, respectively.")
 if TEST: print(background)
 
 # %%
