@@ -50,15 +50,18 @@ def chat(inp, role = "user"):
 
 title_translation = chat(f"Translate this title of a computer science paper into Chinese: {title}")
 if TEST: print(title_translation)
-abstract_translation = chat(f"Translate this abstract of a computer science paper into Chinese: {description}")
-if TEST: print(abstract_translation)
-background = chat(f"Go through each technical term used in the abstract and explain this technical term in detail using English and Chinese, respectively.")
-if TEST: print(background)
+
+# abstract_translation = chat(f"Translate this abstract of a computer science paper into Chinese: {description}")
+# if TEST: print(abstract_translation)
+# background = chat(f"Go through each technical term used in the abstract and explain this technical term in detail using English and Chinese, respectively.")
+# if TEST: print(background)
+respond = chat(f"This is the abstract of a computer science paper: {description}\n\nFirst, translate this abstract into Chinese.\n\nSecond, go through each technical term used in the abstract and explain this technical term in detail using English and Chinese, respectively.")
+if TEST: print(respond)
 
 # %%
 rss_item = {}
 rss_item["title"] = title
-background_lines = re.sub(r'\n', '<br>', background)
-rss_item["description"] = f"<p>{title_translation}</p><p>{author}</p><p>{description}</p><p>{abstract_translation}</p><p>{background_lines}</p>"
+respond_lines = re.sub(r'\n', '<br>', respond)
+rss_item["description"] = f"<p>{title_translation}</p><p>{author}</p><p>{description}</p><p>{respond_lines}</p>"
 rss_item["link"] = paper["link"]
 print(json.dumps(rss_item))
